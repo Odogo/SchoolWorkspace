@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import junior.global.Node;
+import junior.global.linkedlist.Node;
 
 public class BLL_LinkedList<E extends Comparable<E>> implements Iterable<E> {
 	
@@ -146,6 +146,7 @@ public class BLL_LinkedList<E extends Comparable<E>> implements Iterable<E> {
 	public int size() { return fetchList().size(); }
 	public boolean isEmpty() { return (fetchList() == null || root == null); }
 	
+	@SuppressWarnings("deprecation")
 	public void printList() {
 		if(fetchList() == null) { System.err.println("List returned null, either root is null or is not actually root."); return; }
 		
@@ -154,6 +155,7 @@ public class BLL_LinkedList<E extends Comparable<E>> implements Iterable<E> {
 		System.out.print("]");
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void printListReverse() {
 		List<Node<E>> list = fetchListReverse();
 		if(list == null) { System.err.println("List returned null, either root is null or is not actually root."); return; }
@@ -163,8 +165,8 @@ public class BLL_LinkedList<E extends Comparable<E>> implements Iterable<E> {
 		System.out.print("]");
 	}
 	
-	public List<Node<E>> fetchList() { if(fetchRoot() != null && fetchRoot().isRoot()) return root.fetchAllNodes(); else return null; }
-	public List<Node<E>> fetchListReverse() { if(fetchRoot() != null && fetchRoot().isRoot()) { List<Node<E>> temp = fetchList(); temp.sort(Collections.reverseOrder()); return temp; } else return null; }
+	@SuppressWarnings("deprecation") public List<Node<E>> fetchList() { if(fetchRoot() != null && fetchRoot().isRoot()) return root.fetchAllNodes(); else return null; }
+	@SuppressWarnings("deprecation") public List<Node<E>> fetchListReverse() { if(fetchRoot() != null && fetchRoot().isRoot()) { List<Node<E>> temp = fetchList(); temp.sort(Collections.reverseOrder()); return temp; } else return null; }
 	@Override public Iterator<E> iterator() { return new BLL_LinkedListIterator<E>(root); }
 	
 	public Node<E> convertToNode(E item) { return new Node<E>(item); }

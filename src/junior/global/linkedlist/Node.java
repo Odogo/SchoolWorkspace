@@ -1,4 +1,4 @@
-package junior.global;
+package junior.global.linkedlist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,15 +42,21 @@ public class Node<T> implements Comparable<T> {
 	
 	public void setPrev(Node<T> item) { this.prev = item; }
 	public void setNext(Node<T> item) { this.next = item; }
+	public void setItem(T item) { this.item = item; }
 	
-	public boolean isRoot() { return (fetchPrev() == null); }
+	@Deprecated public boolean isRoot() { return (fetchPrev() == null); }
     
 	/**
 	 * Fetches all of the nodes inside of the linked list.
 	 * Requires node to be root.
 	 * @returns a list of all nodes from root.
+	 * @deprecated It is not recommended to use this, however we keep this for older programs
+	 * such as BigLinkedList and 285b [September package]
+	 * <br>
+	 * <b>inherited from {@link #isRoot()} </b>
+	 * @see {@link Custom_LinkedList}
 	 */
-	public List<Node<T>> fetchAllNodes() {
+	@Deprecated public List<Node<T>> fetchAllNodes() {
 		if(!isRoot()) return null;
 		List<Node<T>> list = new ArrayList<Node<T>>();
 		
@@ -63,6 +69,7 @@ public class Node<T> implements Comparable<T> {
 	/**
 	 * Literally prints out all nodes from root.
 	 * Requires node to be root.
+	 * @deprecated <b>inherited from {@link #isRoot()} </b>
 	 */
 	public void printAllNodes() {
 		if(!isRoot()) return;
@@ -80,6 +87,7 @@ public class Node<T> implements Comparable<T> {
 	 * @param index the index to look for
 	 * @return the node with at the given index otherwise null
 	 * @throws IndexOutOfBoundsException when given index is higher than node count
+	 * @deprecated <b>inherited from {@link #isRoot()} </b>
 	 */
 	public Node<T> fromRootFetchItem(int index) throws IndexOutOfBoundsException {
 		if(!isRoot()) return null;
@@ -99,6 +107,7 @@ public class Node<T> implements Comparable<T> {
 	 * Requires node to be root
 	 * @param item the item to look for
 	 * @return the node with the given item otherwise null
+	 * @deprecated <b>inherited from {@link #isRoot()} </b>
 	 */
 	public Node<T> fromRootFetchItem(T item) {
 		if(!isRoot()) return null;
