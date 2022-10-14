@@ -7,6 +7,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/*
+c, a, r
+true
+m
+ssenlooc
+true
+3
+2 vowels, 2 consonants
+2
+Java%20is%20Great
+language programming best the is Java
+false
+true
+bans
+0
+b
+Charlie
+Ccehikns
+ */
 public class BigString {
 	
 	public static void main(String[] args) {
