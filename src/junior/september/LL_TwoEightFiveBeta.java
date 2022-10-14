@@ -82,7 +82,6 @@ public class LL_TwoEightFiveBeta {
 			System.err.println("Given stack trace [CAN BE IGNORED]: ");
 			e.printStackTrace();
 		}
-		
 		for(Node<Commission> node : root.fetchAllNodes()) System.out.println(node);
 		System.out.println("Deleting no comms");
 		

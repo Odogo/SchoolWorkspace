@@ -199,6 +199,8 @@ public class FiveZeroSixTengo {
 		Player player = fetchClosestAverage(players);
 		System.out.println("Closest fielding average " + player.fetchName() + " with " + percentFormat.format(player.fetchStatsDefense().fetchFieldingPercent()));
 		System.out.println("Compared with: [Team Avg] " + percentFormat.format(fetchFieldingAvg(players)));
+	
+		
 	}
 	
 	private static Player fetchHighestHitter(List<Player> players) {
