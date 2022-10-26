@@ -9,6 +9,7 @@ Enter UNIX Time: 1666816222
 
 Date and time (GMT): Wednesday, October 26, 2022 8:30:22 PM
 Date and time (CST - "America/Chicago"): Wednesday, October 26, 2022 3:30:22 PM GMT-05:00
+[Used https://www.epochconverter.com/ for getting UNIX timestamps]
  */
 public class MSOESeven {
 	
