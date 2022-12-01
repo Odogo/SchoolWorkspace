@@ -1,4 +1,4 @@
-package junior.october.msoe;
+package junior.october.msoe2018;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +33,7 @@ import javax.swing.JFileChooser;
 | '--------------' || '--------------' 
  '----------------'  '----------------'
  */
-public class MSOEFive {
+public class MSOE2018Five {
 	
 	public static void main(String[] args) throws FileNotFoundException, IllegalAccessException {
 		JFileChooser chooser = new JFileChooser();

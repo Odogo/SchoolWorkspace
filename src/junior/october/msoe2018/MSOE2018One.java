@@ -1,4 +1,4 @@
-package junior.october.msoe;
+package junior.october.msoe2018;
 
 import java.util.Scanner;
 
@@ -6,7 +6,7 @@ import java.util.Scanner;
 Enter sentance: I'd like a candy bar, but I'll settle for a carrot
 I'd like a candy bar, but I will settle for a carrot
  */
-public class MSOEOne {
+public class MSOE2018One {
 	
 	public static void main(String[] args) {
 		try (Scanner scanner = new Scanner(System.in)) {

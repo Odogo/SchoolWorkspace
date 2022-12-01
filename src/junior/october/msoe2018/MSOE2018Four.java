@@ -1,4 +1,4 @@
-package junior.october.msoe;
+package junior.october.msoe2018;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ Loss Majority? Yes [1246.0 vs 1254.0]
 % loss: 50.16%
 Avg. Flips to End: 45.0
  */
-public class MSOEFour {
+public class MSOE2018Four {
 	
 	public static class SimulationResult {
 		private boolean didWin;

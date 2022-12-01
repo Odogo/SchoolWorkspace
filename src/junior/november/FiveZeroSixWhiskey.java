@@ -2,8 +2,10 @@ package junior.november;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -30,13 +32,26 @@ public class FiveZeroSixWhiskey {
 
 		public List<Player> fetchPlayers() { return players; }
 		public int fetchTeamSize() { return players.size(); }
-		public boolean isPlayer(Player player) { return players.contains(player); }
+		public boolean hasPlayer(Player player) { return players.contains(player); }
+
+		public int fetchTotalHits() {
+			int total = 0;
+			for(Player player : players) total += player.fetchStatsOffense().fetchHits();
+			return total;
+		}
 
 		// -- Setters --
 		public void setTeamName(String teamName) { this.teamName = teamName; }
 
 		public void addPlayer(Player... players) { this.players.addAll(Arrays.asList(players)); }
 		public void removePlayer(Player... players) { this.players.removeAll(Arrays.asList(players)); }
+	}
+
+	private static class PlayerContainer {
+		public SoftballTeam team;
+		public Player player;
+
+		public PlayerContainer(SoftballTeam team, Player player) { this.team = team; this.player = player; } 
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, IllegalAccessException {
@@ -74,9 +89,182 @@ public class FiveZeroSixWhiskey {
 				teams.add(team);
 			}
 		} catch (NoSuchElementException | NumberFormatException e) {
-			System.err.println("Caught exception: Unexpected end of data file, program will continue running.");
+			System.err.println("Caught exception: Unexpected end of data file / Unable to parse integer, program will continue running.");
 			System.err.println("Given stack trace [CAN BE IGNORED]: ");
 			e.printStackTrace();
 		}
+
+		DecimalFormat percent = new DecimalFormat("00.##%");
+
+		System.out.println("Highest hitting team: " + fetchHighestHittingTeam(teams).fetchTeamName() + " [" + fetchHighestHittingTeam(teams).fetchTotalHits() + "]");
+
+		System.out.println("\n");
+
+		PlayerContainer[] twoHighestHitters = fetchTwoHighestBattingAVG(teams);
+		System.out.println("The two highest hitters are");
+		System.out.println(" - " + twoHighestHitters[0].player.fetchName() + " on " + twoHighestHitters[0].team.fetchTeamName() + " with " + percent.format(twoHighestHitters[0].player.fetchStatsOffense().fetchAverage()));
+		System.out.println(" - " + twoHighestHitters[1].player.fetchName() + " on " + twoHighestHitters[1].team.fetchTeamName() + " with " + percent.format(twoHighestHitters[1].player.fetchStatsOffense().fetchAverage()));
+
+		System.out.println("\n");
+
+		PlayerContainer[] twoLowestHitters = fetchTwoLowestFieldingAVG(teams);
+		System.out.println("The two lowest fielders are");
+		System.out.println(" - " + twoLowestHitters[0].player.fetchName() + " on " + twoLowestHitters[0].team.fetchTeamName() + " with " + percent.format(twoLowestHitters[0].player.fetchStatsOffense().fetchAverage()));
+		System.out.println(" - " + twoLowestHitters[1].player.fetchName() + " on " + twoLowestHitters[1].team.fetchTeamName() + " with " + percent.format(twoLowestHitters[1].player.fetchStatsOffense().fetchAverage()));
+
+		System.out.println("\n");
+
+		List<SoftballTeam> sortedByOnBase = fetchTeamsSortedByBasePercent(teams);
+		for(SoftballTeam team : sortedByOnBase) 
+			System.out.println(team.fetchTeamName() + " with a on base percent of " + percent.format(fetchOnBaseAverage(team)));
+
+		System.out.println("\n");
+
+		List<PlayerContainer> allPlayerSlug = sortAllPlayersBySlugging(teams);
+		for(PlayerContainer container : allPlayerSlug)
+			System.out.println(container.player.fetchName() + " on team " + container.team.fetchTeamName() + " has " + percent.format(container.player.fetchStatsOffense().fetchSlugging()) + " in slugging");
+
+		System.out.println("\n");
+
+		List<SoftballTeam> sortedByHits = fetchSortedTeamsByHits(teams);
+		for(SoftballTeam team : sortedByHits)
+			System.out.println("Team " + team.fetchTeamName() + " has a total of " + fetchAllTotalHits(team) + " hits");
+
+		System.out.println("\n");
+
+		PlayerContainer container = fetchPlayerClosestToAllAverage(teams);
+		System.out.println(container.player.fetchName() + " has a fielding percentage of " + percent.format(container.player.fetchStatsDefense().fetchFieldingPercent()));
+		System.out.println("Compared to the average of " + percent.format(fetchAverageFielding(teams)) + "\n");
 	}
+
+	private static List<Player> fetchAllPlayers(List<SoftballTeam> teams) {
+		List<Player> players = new ArrayList<>();
+		for(SoftballTeam team : teams) players.addAll(team.fetchPlayers());
+		return players;
+	}
+
+	private static SoftballTeam fetchPlayerTeam(List<SoftballTeam> teams, Player query) {
+		for(SoftballTeam team : teams)
+			if(team.hasPlayer(query)) return team;
+		return null;
+	}
+
+	private static SoftballTeam fetchHighestHittingTeam(List<SoftballTeam> teams) {
+		SoftballTeam temp = null;
+		for(SoftballTeam team : teams) {
+			if(temp == null) { temp = team; continue; }
+			if(team.fetchTotalHits() > temp.fetchTotalHits()) { temp = team; continue; }
+		}
+		return temp;
+	}
+
+	private static PlayerContainer[] fetchTwoHighestBattingAVG(List<SoftballTeam> teams) {
+		List<Player> players = fetchAllPlayers(teams);
+
+		Player highest = null;
+		for(Player player : players) {
+			if(highest == null) { highest = player; continue; }
+			if(player.fetchStatsOffense().fetchAverage() > highest.fetchStatsOffense().fetchAverage()) highest = player;
+		}
+
+		Player secondary = null;
+		for(Player player : players) {
+			if(player.equals(highest)) continue;
+			if(secondary == null) { secondary = player; continue; }
+			if(player.fetchStatsOffense().fetchAverage() > secondary.fetchStatsOffense().fetchAverage()) secondary = player;
+		}
+
+		return new PlayerContainer[] { new PlayerContainer(fetchPlayerTeam(teams, highest), highest), new PlayerContainer(fetchPlayerTeam(teams, secondary), secondary) };
+	}
+
+	private static PlayerContainer[] fetchTwoLowestFieldingAVG(List<SoftballTeam> teams) {
+		List<Player> players = fetchAllPlayers(teams);
+
+		Player lowest = null;
+		for(Player player : players) {
+			if(lowest == null) { lowest = player; continue; }
+			if(player.fetchStatsOffense().fetchAverage() < lowest.fetchStatsOffense().fetchAverage()) lowest = player;
+		}
+
+		Player secondary = null;
+		for(Player player : players) {
+			if(player.equals(lowest)) continue;
+			if(secondary == null) { secondary = player; continue; }
+			if(player.fetchStatsOffense().fetchAverage() < secondary.fetchStatsOffense().fetchAverage()) secondary = player;
+		}
+
+		return new PlayerContainer[] { new PlayerContainer(fetchPlayerTeam(teams, lowest), lowest), new PlayerContainer(fetchPlayerTeam(teams, secondary), secondary) };
+	}
+
+	private static double fetchOnBaseAverage(SoftballTeam team) {
+		double onBase = 0;
+		for(Player player : team.fetchPlayers()) onBase += player.fetchStatsOffense().fetchOnBasePercent();
+		return onBase / team.fetchTeamSize();
+	}
+
+	private static List<SoftballTeam> fetchTeamsSortedByBasePercent(List<SoftballTeam> teams) {
+		List<SoftballTeam> sortable = new ArrayList<SoftballTeam>(teams);
+		sortable.sort(new Comparator<SoftballTeam>() { 
+			@Override public int compare(SoftballTeam o1, SoftballTeam o2) {
+				return Double.compare(fetchOnBaseAverage(o2), fetchOnBaseAverage(o1));
+			}
+		});
+		return sortable;
+	}
+
+	private static List<PlayerContainer> sortAllPlayersBySlugging(List<SoftballTeam> teams) {
+		List<Player> players = fetchAllPlayers(teams);
+		players.sort(new Comparator<Player>() {
+			@Override public int compare(Player o1, Player o2) {
+				return Double.compare(o2.fetchStatsOffense().fetchSlugging(), o1.fetchStatsOffense().fetchSlugging());
+			}
+		});
+
+		List<PlayerContainer> containers = new ArrayList<PlayerContainer>();
+		for(Player player : players)
+			containers.add(new PlayerContainer(fetchPlayerTeam(teams, player), player));
+		return containers;
+	}
+
+	private static int fetchAllTotalHits(SoftballTeam team) {
+		int total = 0;
+		for(Player player : team.fetchPlayers()) total += player.fetchStatsOffense().fetchHits();
+		return total;
+	}
+
+	private static List<SoftballTeam> fetchSortedTeamsByHits(List<SoftballTeam> teams) {
+		List<SoftballTeam> sortable = new ArrayList<SoftballTeam>(teams);
+		sortable.sort(new Comparator<SoftballTeam>() {
+			@Override public int compare(SoftballTeam o1, SoftballTeam o2) {
+				return Integer.compare(fetchAllTotalHits(o2), fetchAllTotalHits(o1));
+			}
+		});
+		return sortable;
+	}
+
+	private static double fetchAverageFielding(List<SoftballTeam> teams) {
+		List<Player> players = fetchAllPlayers(teams);
+		double average = 0;
+		for(Player player : players) average += player.fetchStatsDefense().fetchFieldingPercent();
+		average /= players.size();
+		return average;
+	}
+
+	private static PlayerContainer fetchPlayerClosestToAllAverage(List<SoftballTeam> teams) {
+		List<Player> players = fetchAllPlayers(teams);
+		double average = fetchAverageFielding(teams);
+
+		Player closestPlayer = null;
+		double difference = Double.MAX_VALUE;
+		for(Player player : players) {
+			double tempDiff = Math.abs(average - player.fetchStatsDefense().fetchFieldingPercent());
+			if(closestPlayer == null || tempDiff < difference) {
+				closestPlayer = player;
+				difference = tempDiff;
+			}
+		}
+
+		return new PlayerContainer(fetchPlayerTeam(teams, closestPlayer), closestPlayer);
+	}
+
 }

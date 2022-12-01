@@ -1,4 +1,4 @@
-package junior.october.msoe;
+package junior.october.msoe2018;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ Enter sentence: Either it is science or just weird that I received sufficient ca
 6: weird
 10: sufficient
  */
-public class MSOETwo {
+public class MSOE2018Two {
 
 	public static void main(String[] args) {
 		try (Scanner scanner = new Scanner(System.in)) {

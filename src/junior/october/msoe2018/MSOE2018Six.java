@@ -1,4 +1,4 @@
-package junior.october.msoe;
+package junior.october.msoe2018;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,7 +35,7 @@ import javax.swing.JFileChooser;
 1|1 1'9-5-1'1 2|1 1'9-5-1'1 
 1 1'9-7-1'2 1'9-7-1'
  */
-public class MSOESix {
+public class MSOE2018Six {
 
 	public static class CompressionData {
 		private char symbol; private int amount;

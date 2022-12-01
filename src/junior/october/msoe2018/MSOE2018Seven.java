@@ -1,4 +1,4 @@
-package junior.october.msoe;
+package junior.october.msoe2018;
 
 import java.text.DecimalFormat;
 import java.util.Scanner;
@@ -11,7 +11,7 @@ Date and time (GMT): Wednesday, October 26, 2022 8:30:22 PM
 Date and time (CST - "America/Chicago"): Wednesday, October 26, 2022 3:30:22 PM GMT-05:00
 [Used https://www.epochconverter.com/ for getting UNIX timestamps]
  */
-public class MSOESeven {
+public class MSOE2018Seven {
 	
 	private static final int SECONDS_PER_MINUTE = 60;
 	private static final int SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE;
