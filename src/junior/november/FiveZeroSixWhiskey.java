@@ -135,6 +135,101 @@ public class FiveZeroSixWhiskey {
 		PlayerContainer container = fetchPlayerClosestToAllAverage(teams);
 		System.out.println(container.player.fetchName() + " has a fielding percentage of " + percent.format(container.player.fetchStatsDefense().fetchFieldingPercent()));
 		System.out.println("Compared to the average of " + percent.format(fetchAverageFielding(teams)) + "\n");
+
+		System.out.println("\n");
+
+		try(Scanner scanner = new Scanner(System.in)) {
+
+			System.out.println("What would you like to see?");
+			System.out.println("a/1) the most of");
+			System.out.println("b/2) the least of");
+			System.out.print("Enter option: ");
+			String result = scanner.nextLine();
+			if(!(result.equalsIgnoreCase("a") || result.equalsIgnoreCase("b") || result.equalsIgnoreCase("1") || result.equalsIgnoreCase("2"))) {
+				System.err.println("Invalid response.");
+				return;
+			}
+
+			boolean least = result.equalsIgnoreCase("b") || result.equalsIgnoreCase("2") ? true: false;
+
+			System.out.println("\nWhat would you like to see?");
+			System.out.println("a) singles");
+			System.out.println("b) doubles");
+			System.out.println("c) triples");
+			System.out.println("d) home runs");
+			System.out.print("Enter option: ");
+			String result2 = scanner.nextLine();
+
+			List<Player> players = fetchAllPlayers(teams);
+			String type = "";
+			if(result2.equalsIgnoreCase("a")) {
+				// singles
+				type = "singles";
+				players.sort(new Comparator<Player>() {
+					@Override public int compare(Player o1, Player o2) {
+						if(!least) return Double.compare(o2.fetchStatsOffense().fetchSingles(), o1.fetchStatsOffense().fetchSingles());
+						else return Double.compare(o1.fetchStatsOffense().fetchSingles(), o2.fetchStatsOffense().fetchSingles());
+					}
+				});
+			} else if(result2.equalsIgnoreCase("b")) {
+				// doubles
+				type = "doubles";
+				players.sort(new Comparator<Player>() {
+					@Override public int compare(Player o1, Player o2) {
+						if(!least) return Double.compare(o2.fetchStatsOffense().fetchDoubles(), o1.fetchStatsOffense().fetchDoubles());
+						else return Double.compare(o1.fetchStatsOffense().fetchDoubles(), o2.fetchStatsOffense().fetchDoubles());
+					}
+				});
+			} else if(result2.equalsIgnoreCase("c")) {
+				// triples
+				type = "triples";
+				players.sort(new Comparator<Player>() {
+					@Override public int compare(Player o1, Player o2) {
+						if(!least) return Double.compare(o2.fetchStatsOffense().fetchTriples(), o1.fetchStatsOffense().fetchTriples());
+						else return Double.compare(o1.fetchStatsOffense().fetchTriples(), o2.fetchStatsOffense().fetchTriples());
+					}
+				});
+			} else if(result2.equalsIgnoreCase("d")) {
+				// home run
+				type = "home runs";
+				players.sort(new Comparator<Player>() {
+					@Override public int compare(Player o1, Player o2) {
+						if(!least) return Double.compare(o2.fetchStatsOffense().fetchHomeRuns(), o1.fetchStatsOffense().fetchHomeRuns());
+						else return Double.compare(o1.fetchStatsOffense().fetchHomeRuns(), o2.fetchStatsOffense().fetchHomeRuns());
+					}
+				});
+			} else {
+				System.err.println("Invalid response");
+				return;
+			}
+
+			System.out.println("\n-- TOP OF LIST --");
+
+			for(Player player : players) {
+				System.out.print(player.fetchName() + " on " + fetchPlayerTeam(teams, player).fetchTeamName() + " has ");
+				if(type.equalsIgnoreCase("singles")) System.out.print(player.fetchStatsOffense().fetchSingles());
+				else if(type.equalsIgnoreCase("doubles")) System.out.print(player.fetchStatsOffense().fetchDoubles());
+				else if(type.equalsIgnoreCase("triples")) System.out.print(player.fetchStatsOffense().fetchTriples());
+				else if(type.equalsIgnoreCase("home runs")) System.out.print(player.fetchStatsOffense().fetchHomeRuns());
+				System.out.println(" " + type);
+			}
+
+			System.out.println("-- BOTTOM OF LIST --\n");
+
+			System.out.println("\n");
+
+			sortedByHits = fetchSortedTeamsByHits(teams);
+			for(SoftballTeam team : sortedByHits)
+				System.out.println("Team " + team.fetchTeamName() + " has a total of " + fetchAllTotalHits(team) + " hits");
+
+			System.out.println("\n");
+
+			container = fetchPlayerClosestToAllAverage(teams);
+			System.out.println(container.player.fetchName() + " has a fielding percentage of " + percent.format(container.player.fetchStatsDefense().fetchFieldingPercent()));
+			System.out.println("Compared to the average of " + percent.format(fetchAverageFielding(teams)) + "\n");
+
+			System.out.println("\n");
+		}
 	}
 
 	private static List<Player> fetchAllPlayers(List<SoftballTeam> teams) {
