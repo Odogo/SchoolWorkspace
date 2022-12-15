@@ -9,7 +9,7 @@ import javax.swing.JFileChooser;
 
 /**
  * Finished reading the datafile, continuing.
- * 
+ *
  * dne on sah gnidneps siH
  * dneirf taerg ym si nus ehT
  * dlog eht snwo taht eh tuB
