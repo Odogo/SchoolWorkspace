@@ -11,7 +11,19 @@ public class Custom_LinkedList<A> implements Iterable<Node<A>> {
 	// Using to make sure everything is solid, and also a good use for an iterator.
 	// As well as saves time when trying to make a for loop
 	private List<Node<A>> rawList;
+	
+	/**
+	 * Creates a new linked list without anything in it, leaving root null.
+	 */
+	public Custom_LinkedList() {
+		this.root = null;
+		this.rawList = new ArrayList<>();
+	}
 
+	/**
+	 * Creates a new linked list with a filled root slot, otherwise empty.
+	 * @param root the starting node.
+	 */
 	public Custom_LinkedList(Node<A> root) {
 		this.root = root;
 		this.rawList = new ArrayList<Node<A>>();

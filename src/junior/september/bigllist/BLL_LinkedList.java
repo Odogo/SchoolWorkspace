@@ -105,8 +105,7 @@ public class BLL_LinkedList<E extends Comparable<E>> implements Iterable<E> {
 		Node<E> prev = remove.fetchPrev(), next = remove.fetchNext();
 		prev.setNext(next); next.setPrev(prev); return remove;
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	public void sort() {
 		if(root == null) return;
 		Node<E> root2 = null;
@@ -114,12 +113,12 @@ public class BLL_LinkedList<E extends Comparable<E>> implements Iterable<E> {
 		if(!(root.fetchItem() instanceof Number)) return;
 		
 		List<Node<E>> list = fetchList();
-		list.sort((Comparator<? super Node<E>>) new Comparator<E>() {
-			@Override public int compare(E o1, E o2) { 
-				return o1.compareTo(o2);
+		list.sort(new Comparator<Node<E>>() {
+			@Override public int compare(Node<E> o1, Node<E> o2) {
+				return o1.compareTo(o2.fetchItem());
 			}
 		});
-		
+
 		int slot = 0;
 		Node<E> current = new Node<E>(list.get(slot).fetchItem());
 		Node<E> last = null;
