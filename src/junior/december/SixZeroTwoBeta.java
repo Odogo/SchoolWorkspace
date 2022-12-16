@@ -7,6 +7,26 @@ import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/*
+1825 spent 3.25 hours (priority: 0) totalling: $200.00
+14063 spent 17.06 hours (priority: 1) totalling: $661.80
+17185 spent 7.93 hours (priority: 1) totalling: $396.50
+19111 spent 12.0 hours (priority: 2) totalling: $700.00
+20045 spent 5.0 hours (priority: 1) totalling: $250.00
+21352 spent 5.84 hours (priority: 0) totalling: $242.00
+22841 spent 27.9 hours (priority: 2) totalling: $1087.00
+23051 spent 1.55 hours (priority: 2) totalling: $350.00
+29118 spent 15.02 hours (priority: 0) totalling: $550.60
+
+--- split --- [after killing the 1s]
+
+1825 spent 3.25 hours (priority: 0) totalling: $200.00
+19111 spent 12.0 hours (priority: 2) totalling: $700.00
+21352 spent 5.84 hours (priority: 0) totalling: $242.00
+22841 spent 27.9 hours (priority: 2) totalling: $1087.00
+23051 spent 1.55 hours (priority: 2) totalling: $350.00
+29118 spent 15.02 hours (priority: 0) totalling: $550.60
+ */
 public class SixZeroTwoBeta {
 
     public static class CompanyAccount {
@@ -76,8 +96,10 @@ public class SixZeroTwoBeta {
         }
 
         for(int i=0; i<list.size(); i++) {
-            if(list.get(i).getPriorityCode() == 1)
+            if(list.get(i).getPriorityCode() == 1) {
                 list.remove(i);
+                i--;
+            }
         }
 
         System.out.println("\n--- split ---\n");
