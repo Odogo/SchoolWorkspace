@@ -3,7 +3,7 @@ package junior.global;
 import java.util.Objects;
 
 /** The global class for all 285b programs */
-public class Commission {
+public class Commission implements Comparable {
 	
 	private int id, code;
 	private double sales;
@@ -43,5 +43,10 @@ public class Commission {
 	
 	@Override public String toString() {
 		return "{Id:" + id + ", Code: " + code + ", Sales:" + sales + ", Com: " + fetchCommission() + "}";
+	}
+
+	@Override public int compareTo(Object obj) {
+		if (getClass() != obj.getClass()) throw new RuntimeException("Class " + obj.getClass() + " is not a valid type for " + getClass());
+		return Double.compare(fetchCommission(), ((Commission) obj).fetchCommission());
 	}
 }
